@@ -3,10 +3,16 @@ package com.fitbook.controller;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -37,9 +43,38 @@ public class AppController {
 	MessageSource messageSource;
 
 	/**
+	 * This method calls the login page.
+	 */
+	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
+	public String loginPage() {
+		return "login";
+	}
+
+	/**
+	 * This method calls the access denied page.
+	 */
+	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
+	public String accessDeniedPage(ModelMap model) {
+		model.addAttribute("user", getPrincipal());
+		return "accessDenied";
+	}
+
+	/**
+	 * This method calls the logout page.
+	 */
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/login?logout";
+	}
+
+	/**
 	 * This method will list all existing users.
 	 */
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/users" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
 
 		List<User> users = userService.findAllUsers();
@@ -69,16 +104,6 @@ public class AppController {
 			return "registration";
 		}
 
-		/*
-		 * Preferred way to achieve uniqueness of field [sso] should be
-		 * implementing custom @Unique annotation and applying it on field [sso]
-		 * of Model class [User].
-		 * 
-		 * Below mentioned peace of code [if block] is to demonstrate that you
-		 * can fill custom errors outside the validation framework as well while
-		 * still using internationalized messages.
-		 * 
-		 */
 		if (!userService.isUserSSOUnique(user.getId(), user.getSsoId())) {
 			FieldError ssoError = new FieldError("user", "ssoId", messageSource.getMessage("non.unique.ssoId",
 					new String[] { user.getSsoId() }, Locale.getDefault()));
@@ -90,7 +115,7 @@ public class AppController {
 
 		model.addAttribute("success",
 				"User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
-		// return "success";
+
 		return "registrationsuccess";
 	}
 
@@ -116,17 +141,6 @@ public class AppController {
 			return "registration";
 		}
 
-		/*
-		 * //Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in
-		 * UI which is a unique key to a User.
-		 * if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-		 * FieldError ssoError =new
-		 * FieldError("user","ssoId",messageSource.getMessage(
-		 * "non.unique.ssoId", new String[]{user.getSsoId()},
-		 * Locale.getDefault())); result.addError(ssoError); return
-		 * "registration"; }
-		 */
-
 		userService.updateUser(user);
 
 		model.addAttribute("success",
@@ -144,11 +158,26 @@ public class AppController {
 	}
 
 	/**
-	 * This method will provide UserProfile list to views
+	 * This method will provide UserProfile list to views.
 	 */
 	@ModelAttribute("roles")
 	public List<UserProfile> initializeProfiles() {
 		return userProfileService.findAll();
+	}
+
+	/**
+	 * Returns the userName.
+	 */
+	private String getPrincipal() {
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails) principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
 	}
 
 }
