@@ -30,6 +30,9 @@ public class JpaConfiguration {
 	@Autowired
 	private Environment environment;
 
+	/**
+	 * Session factory configuration
+	 */
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -39,6 +42,9 @@ public class JpaConfiguration {
 		return sessionFactory;
 	}
 
+	/**
+	 * Data source configuration
+	 */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -49,6 +55,9 @@ public class JpaConfiguration {
 		return dataSource;
 	}
 
+	/**
+	 * Entity manager configuration
+	 */
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -59,8 +68,8 @@ public class JpaConfiguration {
 		return factoryBean;
 	}
 
-	/*
-	 * Provider specific adapter.
+	/**
+	 * Jpa vendor adaptor configuration
 	 */
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
@@ -68,19 +77,20 @@ public class JpaConfiguration {
 		return hibernateJpaVendorAdapter;
 	}
 
-	/*
-	 * Here you can specify any provider specific properties.
+	/**
+	 * Jpa properties for hibernate
 	 */
 	private Properties jpaProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-		// properties.put("hibernate.hbm2ddl.auto",
-		// environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
 		properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
 		properties.put("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
 		return properties;
 	}
 
+	/**
+	 * Transaction manager configuration
+	 */
 	@Bean
 	@Autowired
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {

@@ -21,6 +21,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Load a user by given SSOid
+	 */
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String ssoId) throws UsernameNotFoundException {
 		User user = userService.findBySSO(ssoId);
@@ -33,6 +36,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 				user.getState().equals("Active"), true, true, true, getGrantedAuthorities(user));
 	}
 
+	/**
+	 * Returns a list a rights for a user
+	 */
 	private List<GrantedAuthority> getGrantedAuthorities(User user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 

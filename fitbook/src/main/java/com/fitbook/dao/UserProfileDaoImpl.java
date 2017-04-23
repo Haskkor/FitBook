@@ -11,10 +11,16 @@ import com.fitbook.model.UserProfile;
 @Repository("userProfileDao")
 public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile> implements UserProfileDao {
 
+	/**
+	 * Finds a profile by its id
+	 */
 	public UserProfile findById(int id) {
 		return getByKey(id);
 	}
 
+	/**
+	 * Finds a profile by its type
+	 */
 	public UserProfile findByType(String type) {
 		System.out.println("type: " + type);
 		try {
@@ -27,6 +33,9 @@ public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile> implem
 		}
 	}
 
+	/**
+	 * Finds all profiles
+	 */
 	@SuppressWarnings("unchecked")
 	public List<UserProfile> findAll() {
 		List<UserProfile> userProfiles = getEntityManager()

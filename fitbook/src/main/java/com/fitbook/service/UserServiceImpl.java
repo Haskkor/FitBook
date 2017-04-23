@@ -16,24 +16,30 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao dao;
 
+	/**
+	 * Finds a user by its id
+	 */
 	public User findById(int id) {
 		return dao.findById(id);
 	}
 
+	/**
+	 * Finds a user by its SSOid
+	 */
 	public User findBySSO(String sso) {
 		User user = dao.findBySSO(sso);
 		return user;
 	}
 
+	/**
+	 * Persists a user
+	 */
 	public void saveUser(User user) {
 		dao.save(user);
 	}
 
-	/*
-	 * Since the method is running with Transaction, No need to call hibernate
-	 * update explicitly. Just fetch the entity from db and update it with
-	 * proper values within transaction. It will be updated in db once
-	 * transaction ends.
+	/**
+	 * Updates a user
 	 */
 	public void updateUser(User user) {
 		User entity = dao.findById(user.getId());
@@ -47,14 +53,23 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/**
+	 * Deletes a user
+	 */
 	public void deleteUserBySSO(String sso) {
 		dao.deleteBySSO(sso);
 	}
 
+	/**
+	 * Finds all users
+	 */
 	public List<User> findAllUsers() {
 		return dao.findAllUsers();
 	}
 
+	/**
+	 * Returns a boolean telling if the given SSOid is unique
+	 */
 	public boolean isUserSSOUnique(Integer id, String sso) {
 		User user = findBySSO(sso);
 		return (user == null || ((id != null) && (user.getId() == id)));

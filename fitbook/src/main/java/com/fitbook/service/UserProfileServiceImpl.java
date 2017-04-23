@@ -16,14 +16,23 @@ public class UserProfileServiceImpl implements UserProfileService {
 	@Autowired
 	UserProfileDao dao;
 
+	/**
+	 * Finds a profile by its id
+	 */
 	public UserProfile findById(int id) {
 		return dao.findById(id);
 	}
 
+	/**
+	 * Finds a profile by its type
+	 */
 	public UserProfile findByType(String type) {
 		return dao.findByType(type);
 	}
 
+	/**
+	 * Finds all profiles
+	 */
 	public List<UserProfile> findAll() {
 		return dao.findAll();
 	}

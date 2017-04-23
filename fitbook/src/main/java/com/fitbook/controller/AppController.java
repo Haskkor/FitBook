@@ -43,7 +43,7 @@ public class AppController {
 	MessageSource messageSource;
 
 	/**
-	 * This method calls the login page.
+	 * Calls the home page. Here the login page
 	 */
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public String loginPage() {
@@ -51,7 +51,7 @@ public class AppController {
 	}
 
 	/**
-	 * This method calls the access denied page.
+	 * Calls the access denied page
 	 */
 	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
 	public String accessDeniedPage(ModelMap model) {
@@ -60,7 +60,7 @@ public class AppController {
 	}
 
 	/**
-	 * This method calls the logout page.
+	 * Calls the logout page
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
@@ -72,18 +72,17 @@ public class AppController {
 	}
 
 	/**
-	 * This method will list all existing users.
+	 * Calls the page with the list of users
 	 */
 	@RequestMapping(value = { "/users" }, method = RequestMethod.GET)
 	public String listUsers(ModelMap model) {
-
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		return "userslist";
 	}
 
 	/**
-	 * This method will provide the medium to add a new user.
+	 * Calls the page to add a new user
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.GET)
 	public String newUser(ModelMap model) {
@@ -94,12 +93,10 @@ public class AppController {
 	}
 
 	/**
-	 * This method will be called on form submission, handling POST request for
-	 * saving user in database. It also validates the user input
+	 * Persists the user
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
 	public String saveUser(@Valid User user, BindingResult result, ModelMap model) {
-
 		if (result.hasErrors()) {
 			return "registration";
 		}
@@ -120,7 +117,7 @@ public class AppController {
 	}
 
 	/**
-	 * This method will provide the medium to update an existing user.
+	 * Calls the user's edition page
 	 */
 	@RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.GET)
 	public String editUser(@PathVariable String ssoId, ModelMap model) {
@@ -131,12 +128,10 @@ public class AppController {
 	}
 
 	/**
-	 * This method will be called on form submission, handling POST request for
-	 * updating user in database. It also validates the user input
+	 * Persists the updated user
 	 */
 	@RequestMapping(value = { "/edit-user-{ssoId}" }, method = RequestMethod.POST)
 	public String updateUser(@Valid User user, BindingResult result, ModelMap model, @PathVariable String ssoId) {
-
 		if (result.hasErrors()) {
 			return "registration";
 		}
@@ -149,16 +144,16 @@ public class AppController {
 	}
 
 	/**
-	 * This method will delete an user by it's SSOID value.
+	 * Deletes a user
 	 */
 	@RequestMapping(value = { "/delete-user-{ssoId}" }, method = RequestMethod.GET)
 	public String deleteUser(@PathVariable String ssoId) {
 		userService.deleteUserBySSO(ssoId);
-		return "redirect:/list";
+		return "redirect:/users";
 	}
 
 	/**
-	 * This method will provide UserProfile list to views.
+	 * Returns a list of users
 	 */
 	@ModelAttribute("roles")
 	public List<UserProfile> initializeProfiles() {
@@ -166,7 +161,7 @@ public class AppController {
 	}
 
 	/**
-	 * Returns the userName.
+	 * Returns the name of the user
 	 */
 	private String getPrincipal() {
 		String userName = null;

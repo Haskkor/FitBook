@@ -6,7 +6,7 @@
     <title>AccessDenied page</title>
 </head>
 <body>
-    Dear <strong>${user}</strong>, You are not authorized to access this page
+    Hey <strong>${user}</strong>, it's not a place for you here. ;)
     <a href="<c:url value="/logout" />">Logout</a>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package com.fitbook.model;
 
 public enum UserProfileType {
-	USER("USER"), DBA("DBA"), ADMIN("ADMIN");
+	USER("USER"), ADMIN("ADMIN");
 
 	String userProfileType;
 

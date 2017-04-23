@@ -12,6 +12,9 @@ import com.fitbook.model.User;
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
+	/**
+	 * Finds a user by its id
+	 */
 	public User findById(int id) {
 		User user = getByKey(id);
 		if (user != null) {
@@ -20,6 +23,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		return user;
 	}
 
+	/**
+	 * Finds a user by its SSO
+	 */
 	public User findBySSO(String sso) {
 		System.out.println("SSO : " + sso);
 		try {
@@ -35,6 +41,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		}
 	}
 
+	/**
+	 * Finds all users
+	 */
 	@SuppressWarnings("unchecked")
 	public List<User> findAllUsers() {
 		List<User> users = getEntityManager().createQuery("SELECT u FROM User u ORDER BY u.firstName ASC")
@@ -42,17 +51,25 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		return users;
 	}
 
+	/**
+	 * Persists a user
+	 */
 	public void save(User user) {
 		persist(user);
 	}
 
+	/**
+	 * Delete a user by its SSO
+	 */
 	public void deleteBySSO(String sso) {
 		User user = (User) getEntityManager().createQuery("SELECT u FROM User u WHERE u.ssoId LIKE :ssoId")
 				.setParameter("ssoId", sso).getSingleResult();
 		delete(user);
 	}
 
-	// An alternative to Hibernate.initialize()
+	/**
+	 * Alternative to Hibernate.initialize()
+	 */
 	protected void initializeCollection(Collection<?> collection) {
 		if (collection == null) {
 			return;

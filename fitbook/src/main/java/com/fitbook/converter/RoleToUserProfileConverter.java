@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 import com.fitbook.model.UserProfile;
 import com.fitbook.service.UserProfileService;
 
-/**
- * A converter class used in views to map id's to actual userProfile objects.
- */
 @Component
 public class RoleToUserProfileConverter implements Converter<Object, UserProfile> {
 
@@ -17,9 +14,7 @@ public class RoleToUserProfileConverter implements Converter<Object, UserProfile
 	UserProfileService userProfileService;
 
 	/**
-	 * Gets UserProfile by Id
-	 * 
-	 * @see org.springframework.core.convert.converter.Converter#convert(java.lang.Object)
+	 * Returns UserProfile by Id
 	 */
 	public UserProfile convert(Object element) {
 		Integer id = Integer.parseInt((String) element);

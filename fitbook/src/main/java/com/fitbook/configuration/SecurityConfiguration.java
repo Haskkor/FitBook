@@ -17,16 +17,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Qualifier("customUserDetailsService")
 	UserDetailsService userDetailsService;
 
+	/**
+	 * Global security configuration
+	 */
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
 
+	/**
+	 * Security configuration Login, newuser and users/*: no security. Admin
+	 * page: role ADMIN
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/", "/login", "/newuser").permitAll().antMatchers("/users/**").permitAll()
-				.antMatchers("/admin/**").access("hasRole('ADMIN') and hasRole('DBA')").and().formLogin()
-				.loginPage("/login").usernameParameter("ssoId").passwordParameter("password").and().csrf().and()
-				.exceptionHandling().accessDeniedPage("/Access_Denied");
+		http.authorizeRequests().antMatchers("/", "/login", "/newuser", "/users/**").permitAll()
+				.antMatchers("/admin/**").access("hasRole('ADMIN')").and().formLogin().loginPage("/login")
+				.usernameParameter("ssoId").passwordParameter("password").and().csrf().and().exceptionHandling()
+				.accessDeniedPage("/Access_Denied");
 	}
 }
