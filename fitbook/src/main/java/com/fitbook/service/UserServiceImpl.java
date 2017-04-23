@@ -6,28 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fitbook.dao.UserDao;
 import com.fitbook.model.User;
+import com.fitbook.repository.UserRepository;
 
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserDao dao;
+	private UserRepository userRepository;
 
 	/**
 	 * Finds a user by its id
 	 */
 	public User findById(int id) {
-		return dao.findById(id);
+		return userRepository.findById(id);
 	}
 
 	/**
 	 * Finds a user by its SSOid
 	 */
-	public User findBySSO(String sso) {
-		User user = dao.findBySSO(sso);
+	public User findBySSO(String ssoId) {
+		User user = userRepository.findBySsoId(ssoId);
 		return user;
 	}
 
@@ -35,14 +35,14 @@ public class UserServiceImpl implements UserService {
 	 * Persists a user
 	 */
 	public void saveUser(User user) {
-		dao.save(user);
+		userRepository.save(user);
 	}
 
 	/**
 	 * Updates a user
 	 */
 	public void updateUser(User user) {
-		User entity = dao.findById(user.getId());
+		User entity = userRepository.findById(user.getId());
 		if (entity != null) {
 			entity.setSsoId(user.getSsoId());
 			entity.setPassword(user.getPassword());
@@ -56,15 +56,15 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Deletes a user
 	 */
-	public void deleteUserBySSO(String sso) {
-		dao.deleteBySSO(sso);
+	public void deleteUserBySSO(String ssoId) {
+		userRepository.deleteBySsoId(ssoId);
 	}
 
 	/**
 	 * Finds all users
 	 */
 	public List<User> findAllUsers() {
-		return dao.findAllUsers();
+		return userRepository.findAll();
 	}
 
 	/**

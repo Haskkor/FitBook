@@ -1,4 +1,4 @@
-package com.fitbook.dao;
+package com.fitbook.repository;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -11,12 +11,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractDao<PK extends Serializable, T> {
+public abstract class AbstractRepository<PK extends Serializable, T> {
 
 	private final Class<T> persistentClass;
 
 	@SuppressWarnings("unchecked")
-	public AbstractDao() {
+	public AbstractRepository() {
 		this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
 				.getActualTypeArguments()[1];
 	}

@@ -1,10 +1,10 @@
-package com.fitbook.dao;
+package com.fitbook.repository;
 
 import java.util.List;
 
 import com.fitbook.model.UserProfile;
 
-public interface UserProfileDao {
+public interface UserProfileRepository {
 
 	List<UserProfile> findAll();
 

@@ -1,4 +1,4 @@
-package com.fitbook.dao;
+package com.fitbook.repository;
 
 import java.util.List;
 
@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.fitbook.model.UserProfile;
 
-@Repository("userProfileDao")
-public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile> implements UserProfileDao {
+@Repository("userProfileRepository")
+public class UserProfileRepositoryImpl extends AbstractRepository<Integer, UserProfile>
+		implements UserProfileRepository {
 
 	/**
 	 * Finds a profile by its id

@@ -1,4 +1,4 @@
-package com.fitbook.dao;
+package com.fitbook.repository;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.fitbook.model.User;
 
-@Repository("userDao")
-public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+@Repository("userRepository")
+public class UserRepositoryImpl extends AbstractRepository<Integer, User> implements UserRepository {
 
 	/**
 	 * Finds a user by its id
@@ -26,11 +26,11 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	/**
 	 * Finds a user by its SSO
 	 */
-	public User findBySSO(String sso) {
-		System.out.println("SSO : " + sso);
+	public User findBySsoId(String ssoId) {
+		System.out.println("SSO : " + ssoId);
 		try {
 			User user = (User) getEntityManager().createQuery("SELECT u FROM User u WHERE u.ssoId LIKE :ssoId")
-					.setParameter("ssoId", sso).getSingleResult();
+					.setParameter("ssoId", ssoId).getSingleResult();
 
 			if (user != null) {
 				initializeCollection(user.getUserProfiles());
@@ -45,7 +45,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	 * Finds all users
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> findAllUsers() {
+	public List<User> findAll() {
 		List<User> users = getEntityManager().createQuery("SELECT u FROM User u ORDER BY u.firstName ASC")
 				.getResultList();
 		return users;
@@ -61,9 +61,9 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	/**
 	 * Delete a user by its SSO
 	 */
-	public void deleteBySSO(String sso) {
+	public void deleteBySsoId(String ssoId) {
 		User user = (User) getEntityManager().createQuery("SELECT u FROM User u WHERE u.ssoId LIKE :ssoId")
-				.setParameter("ssoId", sso).getSingleResult();
+				.setParameter("ssoId", ssoId).getSingleResult();
 		delete(user);
 	}
 
