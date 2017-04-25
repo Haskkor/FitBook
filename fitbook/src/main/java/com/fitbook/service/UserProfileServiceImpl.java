@@ -20,7 +20,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 	 * Finds a profile by its id
 	 */
 	public UserProfile findById(int id) {
-		return userProfileRepository.findById(id);
+		return userProfileRepository.findOne(id);
 	}
 
 	/**

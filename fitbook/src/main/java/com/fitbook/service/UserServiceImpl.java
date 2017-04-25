@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	 * Finds a user by its id
 	 */
 	public User findById(int id) {
-		return userRepository.findById(id);
+		return userRepository.findOne(id);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	 * Updates a user
 	 */
 	public void updateUser(User user) {
-		User entity = userRepository.findById(user.getId());
+		User entity = userRepository.findOne(user.getId());
 		if (entity != null) {
 			entity.setSsoId(user.getSsoId());
 			entity.setPassword(user.getPassword());

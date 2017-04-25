@@ -1,19 +1,13 @@
 package com.fitbook.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fitbook.model.User;
 
-public interface UserRepository {
-
-	User findById(int id);
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 	User findBySsoId(String ssoId);
 
-	void save(User user);
-
 	void deleteBySsoId(String ssoId);
-
-	List<User> findAll();
 
 }

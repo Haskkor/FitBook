@@ -1,14 +1,11 @@
 package com.fitbook.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fitbook.model.UserProfile;
 
-public interface UserProfileRepository {
-
-	List<UserProfile> findAll();
+public interface UserProfileRepository extends JpaRepository<UserProfile, Integer> {
 
 	UserProfile findByType(String type);
 
-	UserProfile findById(int id);
 }
